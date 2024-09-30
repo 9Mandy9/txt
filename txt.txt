@@ -1,0 +1,270 @@
+###7
+#insert
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+
+public class insert
+{
+	public static void main(String args[])
+	{
+		MongoClient mongo=new MongoClient("localhost",27017);
+		System.out.println("connected to the database successfully:");
+		MongoDatabase database=mongo.getDatabase("TYCS_248624");
+		MongoCollection<Document>collection=database.getCollection("SANGRAM");
+		System.out.println("Collection SANGRAM selected successfully");
+		
+		Document document=new Document();
+		document.append("ID",1);
+		document.append("Rollno",248624);
+		document.append("age",21);
+		document.append("college","Mulund College of Commerce");
+		collection.insertOne(document);
+		System.out.println("Document inserted Successfully");
+	}
+}
+
+#retrieve
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+import java.util.Iterator;
+
+public class retrieve {
+    public static void main(String args[]) {
+        MongoClient mongo = new MongoClient("localhost", 27017);
+        System.out.println("Connected to the database successfully:");
+        MongoDatabase database = mongo.getDatabase("TYCS_248624");
+        MongoCollection<Document> collection = database.getCollection("SANGRAM ");
+        System.out.println("Collection SANGRAM selected successfully");
+
+       FindIterable<Document> iterDoc = collection.find();
+      Iterator it = iterDoc.iterator();
+      while (it.hasNext()) {
+         System.out.println(it.next());
+      }
+        
+        mongo.close();
+    }
+}
+
+#update
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+import com.mongodb.client.model.*;
+public class Update {
+    public static void main(String[] args) {
+        MongoClient mongo = new MongoClient("localhost", 27017);
+        System.out.println("Connected to the database successfully:");
+        MongoDatabase database = mongo.getDatabase("TYCS_248624");
+        MongoCollection<Document> collection = database.getCollection("SANGRAM ");
+        System.out.println("Collection SANGRAM selected successfully");
+
+        Document filter = new Document("Rollno", 248624);
+
+        Document updateDoc = new Document("$set", new Document("age", 22));
+        collection.updateOne(filter, updateDoc);
+
+        System.out.println("Document updated Successfully");
+    }
+}
+
+#delete
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+import com.mongodb.client.model.Filters;
+
+public class Delete {
+    public static void main(String[] args) {
+        MongoClient mongo = new MongoClient("localhost", 27017);
+        System.out.println("Connected to the database successfully:");
+        MongoDatabase database = mongo.getDatabase("TYCS_248624");
+        MongoCollection<Document> collection = database.getCollection("SANGRAM ");
+        System.out.println("Collection SANGRAM selected successfully");
+        Document filter = new Document("Rollno", 248624);
+        collection.deleteOne(filter);
+        System.out.println("Document deleted Successfully");
+    }
+}
+
+###8
+
+#insert
+from pymongo import MongoClient
+client = MongoClient('localhost',27017) #MongoClient('host',port)
+db = client.TYCS #client.name_of_the_database
+def insert():
+    try:
+        empID = input("Enter the ID: ")
+        empName = input("Enter the Name: ")
+        empAge = input("Enter the Age: ")
+        empCountry = input("Enter the Country: ")
+
+        db.Employee.insert_one(
+            {
+                "_id": empID,
+                "name": empName,
+                "age": empAge,
+                "country": empCountry,
+            }
+        )
+        print("\nData Inserted Successfully.")
+    except Exception:
+        print(str(Exception))
+    finally:
+        client.close()
+
+insert()
+
+#update
+#Update in MongoDB
+from pymongo import MongoClient
+client = MongoClient('localhost',27017)
+db = client.TYCS 
+
+def update():
+    try:
+        name = input('Enter the name of person whose data is to be updated: ')
+        age = input("Enter the updated age: ")
+        db.Employee.update_one(
+            {"name": name},
+            {"$set": {"age": age}}
+        )
+        print("\nData Updated Successfully")
+    except Exception:
+        print(str(Exception))
+    finally:
+        client.close()
+
+update()
+
+#delete
+#Delete from MongoDB
+from pymongo import MongoClient
+client = MongoClient('localhost',27017)
+db = client.tycs43 
+
+def delete():
+    try:
+        id = input('Enter the ID: ')
+        db.ty248743.delete_one(
+            {"_id:": id}
+        )
+        print('\nData Deleted Successfully')
+    except Exception:
+        print(str(Exception))
+    finally:
+        client.close()
+delete()
+
+#display
+from pymongo import MongoClient
+client = MongoClient('localhost',27017)
+db = client.TYCS 
+def display():
+    try:
+        id = input("Enter the ID to display record: ")
+        for i in db.Employee.find({"_id":id}):
+            print(i)
+        print("\nRecord displayed")
+    except Exception:
+        print(str(Exception))
+    finally:
+        client.close()
+display()
+
+###9
+
+#insert
+<?php
+$m=new MongoClient();
+echo "Connection to Database Succesfully";
+
+$db=$m->mydb;
+echo "Database my db selected";
+$collection=$db->mycol;
+echo "Collection selected succesfully";
+
+$doc=array(
+"title" => "MongoDB",
+"description" => "database",
+"like"=>100,
+"url"=>"http://www.mongo.com",
+"by"=>"NoSql");
+
+$collection->insert($doc);
+echo "Document inserted succesfully";
+?>
+
+#retrieve
+<?php
+$m=new MongoClient();
+echo "Connection to Database Succesfully";
+$db=$m->mydb;
+echo "Database my db selected";
+$collection=$db->mycol;
+echo "Collection selected succesfully";
+
+$cursor=$collection->find();
+
+foreach ($cursor as $doc){
+echo "<br>".$doc["title"]."<br>";
+echo "<br>".$doc["description"]."<br>";
+echo "<br>".$doc["url"]."<br>";
+echo "<br>".$doc["like"]."<br>";
+}
+?>
+
+#update
+<?php
+   $m = new MongoClient();
+   echo "Connection to database successfully";
+	
+   $db = $m->mydb;
+   echo "Database mydb selected";
+   $collection = $db->mycol;
+   echo "Collection selected succsessfully";
+
+   $collection->update(array("title"=>"MongoDB"), 
+      array('$set'=>array("title"=>"MongoDB Tutorial")));
+   echo "Document updated successfully";
+	
+   $cursor = $collection->find();
+	
+   echo "Updated document";
+	
+   foreach ($cursor as $document) {
+      echo $document["title"] . "<br>";
+   }
+?>
+
+#delete
+<?php
+   $m = new MongoClient();
+   echo "Connection to database successfully";
+	
+   $db = $m->mydb;
+   echo "Database mydb selected";
+   $collection = $db->mycol;
+   echo "Collection selected succsessfully";
+   
+   $collection->remove(array("title"=>"MongoDB Tutorial"));
+   echo "Documents deleted successfully";
+   
+   $cursor = $collection->find();
+	
+   echo "Delete document";
+	
+   foreach ($cursor as $document) {
+      echo $document["title"] . "\n";
+   }
+?>
+
+
