@@ -1,0 +1,841 @@
+PRAC 1
+
+use tycs
+show dbs
+db.dropDatabase()
+db.createCollection('abc')
+db.dbcol.drop()
+db.dbcol.insertOne({'id':'1','name':'abc','div':'B'})
+db.dbcol.insertMany([
+{'id':'1','name':'abcde','div':'A'},
+{'id':'3','name':'abc','div':'B'},
+{'id':'4','name':'abcdefg','div':'C'}
+])
+db.dbcol.find()
+db.dbcol.find().pretty()
+
+
+
+
+PRAC 2:
+// Connect to the MongoDB database
+// (Assumes you are using the MongoDB shell)
+//Version check 
+mongod -version 
+//2.Listing MongoDB commands 
+help() 
+//3.DB statistics
+db.stats()  
+// 4.Update Document in a Collection 
+Syntax: collectionName.update({KeyToUpdate},{Set Command}), db.collection.update({criteria},{$set: {new value}}) 
+Syntax: collectionName.updateMany({filter},{Set Command}) 
+//5. Delete Document of a Collection 
+Syntax: collectionName.deleteOne({DeletionCondition}) 
+//6.remove()
+Syntax: collectionName.remove({DeletionCondition},1) 
+//7.Retrieve Distinct  
+Syntax: collectionName.distinct(field) 
+Syntax: collectionName.distinct(field, query) 
+//8. Rename collection 
+Syntax: collectionName.renameCollection(newCollectionName)  
+
+
+// Insert multiple employee records into the 'employees' collection
+db.employees.insertMany([
+    { 'empid': '1', 'name': 'A', 'dept': 'HR', 'salary': '350000' },
+    { 'empid': '2', 'name': 'ABC', 'dept': 'Sales', 'salary': '38000' },
+    { 'empid': '3', 'name': 'P', 'dept': 'IT', 'salary': '48000' },
+    { 'empid': '4', 'name': 'Pqr', 'dept': 'HR', 'salary': '50000' },
+    { 'empid': '5', 'name': 'R', 'dept': 'Media', 'salary': '55000' },
+    { 'empid': '6', 'name': 'Ray', 'dept': 'IT', 'salary': '60000' },
+    { 'empid': '7', 'name': 'S', 'dept': 'HR', 'salary': '70000' },
+    { 'empid': '8', 'name': 'Ss', 'dept': 'HR', 'salary': '20000' },
+    { 'empid': '9', 'name': 'Sj', 'dept': 'IT', 'salary': '80000' },
+    { 'empid': '10', 'name': 'ksd', 'dept': 'HR', 'salary': '90000' },
+    { 'empid': '11', 'name': 'k', 'dept': 'IT', 'salary': '34000' }
+]);
+
+// Insert multiple product records into the 'products' collection
+db.products.insertMany([
+    { productid: 1, name: "Laptop", price: 800, quantity: 100 },
+    { productid: 2, name: "Mouse", price: 20, quantity: 500 },
+    { productid: 3, name: "Keyboard", price: 30, quantity: 200 },
+    { productid: 4, name: "Monitor", price: 150, quantity: 150 },
+    { productid: 5, name: "Printer", price: 100, quantity: 50 },
+    { productid: 6, name: "Webcam", price: 40, quantity: 300 },
+    { productid: 7, name: "Chair", price: 60, quantity: 120 },
+    { productid: 8, name: "Desk", price: 200, quantity: 80 },
+    { productid: 9, name: "Phone", price: 700, quantity: 50 },
+    { productid: 10, name: "Tablet", price: 500, quantity: 75 }
+]);
+
+// Fetch all employee records from the 'employees' collection
+db.employees.find().pretty();
+
+// Fetch specified fields from all employee records (including _id)
+db.employees.find({}, { empid: 1, name: 1, dept: 1, salary: 1 });
+
+// Fetch specified fields from all employee records (excluding _id)
+db.employees.find({}, { _id: 0, empid: 1, name: 1, dept: 1 });
+
+//employees in hr
+db.employees.find({ "dept": "HR" })
+//salary 50000
+db.employees.updateMany({ "dept": "HR" }, { $set: { "salary": 50000 } })
+//price 150
+db.products.updateMany({ quantity: { $gt: 50 } }, { $set: { price: 150 } })
+//removeoneprod
+db.products.deleteOne({})
+//renamecollection
+db.products.renameCollection("productdetails")
+
+
+
+
+PRAC3:
+// 1. create collection orders
+// 2.insert
+db.orders.insertMany([
+    {
+        Customer: "abc",
+        Address: { "City": "Jaipur", "Country": "India" },
+        PaymentMode: "Card",
+        Email: "abc@mail.in",
+        OrderTotal: 1000.00,
+        OrderItems: [
+            { "ItemName": "notebook", "Price": "150.00", "Qty": 10 },
+            { "ItemName": "paper", "Price": "10.00", "Qty": 5 },
+            { "ItemName": "journal", "Price": "200.00", "Qty": 2 },
+            { "ItemName": "postcard", "Price": "10.00", "Qty": 500 }
+        ]
+    },
+    {
+        Customer: "xyz",
+        Address: { "City": "Delhi", "Country": "India" },
+        PaymentMode: "Cash",
+        OrderTotal: 800.00,
+        OrderItems: [
+            { "ItemName": "notebook", "Price": "150.00", "Qty": 5 },
+            { "ItemName": "paper", "Price": "10.00", "Qty": 5 },
+            { "ItemName": "postcard", "Price": "10.00", "Qty": 500 }
+        ]
+    },
+    {
+        Customer: "ron",
+        Address: { "City": "NewYork", "Country": "USA" },
+        PaymentMode: "Card",
+        Email: "ron@mail.com",
+        OrderTotal: 800.00,
+        OrderItems: [
+            { "ItemName": "notebook", "Price": "150.00", "Qty": 5 },
+            { "ItemName": "postcard", "Price": "10.00", "Qty": 0 }
+        ]
+    }
+])
+// 3.payment card
+db.orders.find({ PaymentMode: "Card" })
+// 4.india
+db.orders.find({ "Address.Country": "India" })
+// 5. notebook
+db.orders.find({ "OrderItems.ItemName": "notebook" })
+// 6&7.order gt or gte 500
+db.orders.find({ OrderTotal: { $gte: 500 } })
+db.orders.find({ OrderTotal: { $gt: 500 } })
+//8&9. l<e 900
+db.orders.find({ OrderTotal: { $lt: 900 } })
+db.orders.find({ OrderTotal: { $lte: 900 } })
+// 10.payment notcash
+db.orders.find({ PaymentMode: { $ne: "Cash" } })
+// 11.item notebook or assignment paper or pen
+db.orders.find({ "OrderItems.ItemName": { $in: ["notebook", "assignment papers", "pen"] } })
+// 12.item name not notebook or assignment paper
+db.orders.find({ "OrderItems.ItemName": { $nin: ["notebook", "assignment papers"] } })
+// 13.city and item name
+db.orders.find({ $and: [{ "Address.City": "Mumbai" }, { "OrderItems.ItemName": "notebook" }] })
+// 14.order total 600 or price 200
+db.orders.find({ $or: [{ OrderTotal: 600 }, { "OrderItems.Price": 200 }] })
+// 15.order total not equal to 600
+db.orders.find({ OrderTotal: { $ne: 600 } })
+// 16.city not Mumbai and item name not notebook
+db.orders.find({ $and: [{ "Address.City": { $ne: "Mumbai" } }, { "OrderItems.ItemName": { $ne: "notebook" } }] })
+
+
+
+PRAC 4
+//open browser search for mongodb tool https://www.mongodb.com/try/download/database-tools
+//download the tools in the msi package. Select 86_64
+// click download
+// install the msi package from downloaded files.
+// open control panel and set the path for downloaded msi folders 'bin'.
+// Import JSON data into MongoDB
+mongoimport --db MyDb --collection TYCSRN --file "D:\Big Data NoSql\restaurants.json"
+// 1. Display all documents in the collection TYCSRN
+db.TYCSRN.find().pretty()
+// 2. Display fields restaurant_id, name, borough, and cuisine
+db.TYCSRN.find({}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1, "_id": 0}).pretty()
+// 3. Display fields restaurant_id, name, borough, and cuisine, excluding _id
+db.TYCSRN.find({}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1, "_id": 0}).pretty()
+// 4. Display fields restaurant_id, name, borough, and zip code, excluding _id
+db.TYCSRN.find({}, {"restaurant_id": 1, "name": 1, "borough": 1, "address.zipcode": 1}).pretty()
+// 5. Display all documents in the borough Bronx
+db.TYCSRN.find({"borough": "Bronx"}).pretty()
+// 6. Display the first 5 records in the borough Bronx
+db.TYCSRN.find({"borough": "Bronx"}).limit(5).pretty()
+// 7. Display the next 5 records after skipping the first 5 in the borough Bronx
+db.TYCSRN.find({"borough": "Bronx"}).skip(5).limit(5).pretty()
+// 8. Find TYCSRN with a score more than 90
+db.TYCSRN.find({grades: {$elemMatch: {"score": {$gt: 90}}}}).pretty()
+// 9. Find TYCSRN with a score more than 80 but less than 100
+db.TYCSRN.find({grades: {$elemMatch: {"score": {$gt: 80, $lt: 100}}}}).pretty()
+// 10. Find TYCSRN located at latitude less than -95.754168
+db.TYCSRN.find({"address.coord": {$lt: -95.754168}}).pretty()
+// 11. Find TYCSRN not preparing 'American' cuisine, grade score more than 70, latitude less than 65.754168
+db.TYCSRN.find({$and: [{"cuisine": {$ne: "American"}}, {"grades.score": {$gt: 70}}, {"address.coord": {$lt: -65.754168}}]}).pretty()
+// 12. Find TYCSRN not preparing 'American' cuisine, grade score more than 70, longitude less than -65.754168
+db.TYCSRN.find({"cuisine": {$ne: "American"}, "grades.score": {$gt: 70}, "address.coord": {$lt: -65.754168}}).pretty()
+// 13. Find TYCSRN not preparing 'American' cuisine, grade point 'A', not in Brooklyn, sorted by cuisine descending
+db.TYCSRN.find({"cuisine": {$ne: "American"}, "grades.grade": "A", "borough": {$ne: "Brooklyn"}}).sort({"cuisine": -1}).pretty(
+// 14. Find restaurant Id, name, borough, and cuisine for those with name starting with 'Wil'
+db.TYCSRN.find({name: /^Wil/}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1}).pretty()
+// 15. Find restaurant Id, name, borough, and cuisine for those with name ending with 'ces'
+db.TYCSRN.find({name: /ces$/}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1}).pretty()
+// 16. Find restaurant Id, name, borough, and cuisine for those with 'Reg' in their name
+db.TYCSRN.find({name: /.*Reg.*/}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1}).pretty()
+// 17. Find TYCSRN in the borough Bronx preparing American or Chinese dishes
+db.TYCSRN.find({"borough": "Bronx", $or: [{"cuisine": "American"}, {"cuisine": "Chinese"}]}).pretty()
+// 18. Find restaurant Id, name, borough, and cuisine for those in Staten Island, Queens, Bronx, or Brooklyn
+db.TYCSRN.find({"borough": {$in: ["Staten Island", "Queens", "Bronx", "Brooklyn"]}}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1}).pretty()
+// 19. Find restaurant Id, name, borough, and cuisine for those not in Staten Island, Queens, Bronx, or Brooklyn
+db.TYCSRN.find({"borough": {$nin: ["Staten Island", "Queens", "Bronx", "Brooklyn"]}}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1}).pretty()
+// 20. Find restaurant Id, name, borough, and cuisine for those with a score not more than 10
+db.TYCSRN.find({"grades.score": {$not: {$gt: 10}}}, {"restaurant_id": 1, "name": 1, "borough": 1, "cuisine": 1}).pretty()
+// 21. Find restaurant Id, name, and grades for those achieving grade "A" and score 11 on a specific survey date
+db.TYCSRN.find({"grades.date": ISODate("2014-08-11T00:00:00Z"), "grades.grade": "A", "grades.score": 11}, {"restaurant_id": 1, "name": 1, "grades": 1}).pretty()
+// 22. Find restaurant Id, name, and grades where the 2nd element of grades array contains grade "A" and score 9 on a specific survey date
+db.TYCSRN.find({"grades.1.date": ISODate("2014-08-11T00:00:00Z"), "grades.1.grade": "A", "grades.1.score": 9}, {"restaurant_id": 1, "name": 1, "grades": 1}).pretty()
+// 23. Find restaurant Id, name, address, and geographical location where 2nd element of coord array is more than 42 and up to 52
+db.TYCSRN.find({"address.coord.1": {$gt: 42, $lte: 52}}, {"restaurant_id": 1, "name": 1, "address": 1, "coord": 1}).pretty(
+// 24. Arrange the names of TYCSRN in ascending order along with all columns
+db.TYCSRN.find().sort({"name": 1}).pretty()
+// 25. Arrange the names of TYCSRN in descending order along with all columns
+db.TYCSRN.find().sort({"name": -1}).pretty()
+// 26. Arrange the cuisine names in ascending order and borough in descending order
+db.TYCSRN.find().sort({"cuisine": 1, "borough": -1}).pretty()
+// 27. Check if all addresses contain the street
+db.TYCSRN.find({"address.street": {$exists: true}}).pretty()
+// 28. Select all documents where the coord field value is Double
+db.TYCSRN.find({"address.coord": {$type: 1}}).pretty()
+// 29. Find restaurant Id, name, and grades for those where the score returns 0 as a remainder after dividing by 7
+db.TYCSRN.find({"grades.score": {$mod: [7, 0]}}, {"restaurant_id": 1, "name": 1, "grades": 1}).pretty()
+// 30. Find restaurant name, borough, longitude, latitude, and cuisine for those containing 'mon' in their name
+db.TYCSRN.find({name: {$regex: "mon", $options: "i"}}, {"name": 1, "borough": 1, "address.coord": 1, "cuisine": 1}).pretty()
+// 31. Find restaurant name, borough, longitude, latitude, and cuisine for those starting with 'Mad'
+db.TYCSRN.find({name: {$regex: /^Mad/i}}, {"name": 1, "borough": 1, "address.coord": 1, "cuisine": 1}).pretty()
+// 32. Find the count of documents in the TYCSRN collection
+db.TYCSRN.countDocuments()
+
+
+
+PRAC 5
+// MongoDB Aggregation Queries with Explanations
+
+// 1. Insert employee records into Employee collection
+db.Employee.insertMany([
+  { id: 1, name: "Alice", age: 30, city: "New York", salary: 60000 },
+  { id: 2, name: "Bob", age: 25, city: "New York", salary: 70000 },
+  { id: 3, name: "Charlie", age: 35, city: "Los Angeles", salary: 80000 },
+  { id: 4, name: "David", age: 28, city: "Los Angeles", salary: 65000 },
+  { id: 5, name: "Eve", age: 40, city: "Chicago", salary: 75000 },
+  { id: 6, name: "Frank", age: 22, city: "Chicago", salary: 50000 },
+  { id: 7, name: "Grace", age: 29, city: "New York", salary: 90000 },
+  { id: 8, name: "Hank", age: 33, city: "Los Angeles", salary: 95000 },
+  { id: 9, name: "Ivy", age: 26, city: "Chicago", salary: 55000 },
+  { id: 10, name: "Jack", age: 31, city: "New York", salary: 72000 }
+]);
+
+// 2. Display all records from Employee collection
+db.Employee.find().pretty();
+
+// 3. Sum of Salary per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", totalsal: { $sum: "$salary" } } }
+]);
+
+// 4. Average Salary per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", avg_sal: { $avg: "$salary" } } }
+]);
+
+// 5. Minimum Salary per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", min_sal: { $min: "$salary" } } }
+]);
+
+// 6. Maximum Salary per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", max_sal: { $max: "$salary" } } }
+]);
+
+// 7. Push All Salaries into an Array per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", all_salaries: { $push: "$salary" } } }
+]);
+
+// 8. Add Unique Salaries per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", unique_salaries: { $addToSet: "$salary" } } }
+]);
+
+// 9. First Salary per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", first_salary: { $first: "$salary" } } }
+]);
+
+// 10. Last Salary per City
+db.Employee.aggregate([
+  { $group: { _id: "$city", last_salary: { $last: "$salary" } } }
+]);
+
+// 11. Create a Student Collection with Fields: Sid, Sname, age, City, courses, marks
+db.Student.insertMany([
+  { Sid: 1, Sname: "Alice", age: 20, City: "New York", courses: ["Math", "Science"], marks: 85 },
+  { Sid: 2, Sname: "Bob", age: 21, City: "New York", courses: ["Science", "History"], marks: 90 },
+  { Sid: 3, Sname: "Charlie", age: 22, City: "Los Angeles", courses: ["Science"], marks: 80 },
+  { Sid: 4, Sname: "David", age: 23, City: "Los Angeles", courses: ["English", "History"], marks: 75 },
+  { Sid: 5, Sname: "Eve", age: 24, City: "Chicago", courses: ["Math", "English"], marks: 95 }
+]);
+
+// 12. Average Marks per City
+db.Student.aggregate([
+  { $group: { _id: "$City", avgmarks: { $avg: "$marks" } } }
+]);
+
+// 13. All Courses and Unique Courses per City
+db.Student.aggregate([
+  { $group: {
+      _id: "$City",
+      allcourses: { $push: "$courses" },
+      uniquecourses: { $addToSet: "$courses" }
+    }
+  }
+]);
+
+// 14. Unique Courses as a Flat List (Using $unwind)
+db.Student.aggregate([
+  { $unwind: "$courses" },
+  { $group: {
+      _id: "$City",
+      allcourses: { $push: "$courses" },
+      uniquecourses: { $addToSet: "$courses" }
+    }
+  }
+]);
+
+
+
+
+PRAC 6:
+
+// 1. Insert Multiple Documents into the 'peaks' collection
+db.peaks.insertMany([
+    {
+        "name": "Everest",
+        "description": "Mount Everest is Earth's highest mountain above sea level",
+        "height": 8848,
+        "location": ["Nepal", "China"],
+        "ascents": {
+            "first": { "year": 1953 },
+            "first_winter": { "year": 1980 },
+            "total": 5656
+        }
+    },
+    {
+        "name": "K2",
+        "description": "K2 is the second highest mountain on Earth",
+        "height": 8611,
+        "location": ["Pakistan", "China"],
+        "ascents": {
+            "first": { "year": 1954 },
+            "first_winter": { "year": 1921 },
+            "total": 306
+        }
+    },
+    {
+        "name": "Kangchenjunga",
+        "description": "Kangchenjunga is the third highest mountain in the world",
+        "height": 8586,
+        "location": ["Nepal", "India"],
+        "ascents": {
+            "first": { "year": 1955 },
+            "first_winter": { "year": 1986 },
+            "total": 283
+        }
+    },
+    {
+        "name": "Lhotse",
+        "description": "Lhotse is the fourth highest mountain in the world",
+        "height": 8516,
+        "location": ["Nepal", "China"],
+        "ascents": {
+            "first": { "year": 1956 },
+            "first_winter": { "year": 1988 },
+            "total": 461
+        }
+    },
+    {
+        "name": "Makalu",
+        "description": "Makalu is the fifth highest mountain in the world",
+        "height": 8485,
+        "location": ["China", "Nepal"],
+        "ascents": {
+            "first": { "year": 1955 },
+            "first_winter": { "year": 2009 },
+            "total": 361
+        }
+    }
+])
+
+// 2. Verify Document Insertion
+db.peaks.find()
+
+// 3. Retrieve Documents with Height Greater than 8700
+db.peaks.find(
+    { "height": { $gt: 8700 } }
+).explain("executionStats")
+
+// 4. Create Index on Height Field
+db.peaks.createIndex( { "height": 1 } )
+
+// 5. Run Query Again to Check Index Performance
+db.peaks.find(
+    { "height": { $gt: 8700 } }
+).explain("executionStats")
+
+// 6. Create Unique Index on Name Field
+db.peaks.createIndex( { "name": 1 }, { "unique": true } )
+
+// 7. Check if Inserting Duplicate Document Works
+db.peaks.insertOne({
+    "name": "Everest",
+    "description": "Mount Everest is Earth's highest mountain above sea level",
+    "height": 8848,
+    "location": ["Nepal", "China"],
+    "ascents": {
+        "first": { "year": 1953 },
+        "first_winter": { "year": 1980 },
+        "total": 5656
+    }
+})
+
+// 8. Retrieve Documents with Total Ascents Greater than 300
+db.peaks.find(
+    { "ascents.total": { $gt: 300 } }
+).sort({ "ascents.total": -1 })
+
+// 9. Run Query Again with Execution Stats
+db.peaks.find(
+    { "ascents.total": { $gt: 300 } }
+).sort({ "ascents.total": -1 }).explain("executionStats")
+
+// 10. Create Index on Total Field within Ascents Document
+db.peaks.createIndex( { "ascents.total": 1 } )
+
+// 11. Run Previous Query Again to Check Index Efficiency
+db.peaks.find(
+    { "ascents.total": { $gt: 300 } }
+).sort({ "ascents.total": -1 }).explain("executionStats")
+
+// 12. Find Mountains with Height Less than 8600 and Winter Ascent After 1990
+db.peaks.find(
+    {
+        "ascents.first_winter.year": { $gt: 1990 },
+        "height": { $lt: 8600 }
+    }
+).sort({ "height": -1 })
+
+// 13. Explain the Query Performance
+db.peaks.find(
+    {
+        "ascents.first_winter.year": { $gt: 1990 },
+        "height": { $lt: 8600 }
+    }
+).sort({ "height": -1 }).explain("executionStats")
+
+// 14. Create Compound Index on First Winter Ascent and Height
+db.peaks.createIndex(
+    {
+        "ascents.first_winter.year": 1,
+        "height": -1
+    }
+)
+
+// 15. Run the Previous Query Again to Check Execution Performance
+db.peaks.find(
+    {
+        "ascents.first_winter.year": { $gt: 1990 },
+        "height": { $lt: 8600 }
+    }
+).sort({ "height": -1 }).explain("executionStats")
+
+// 16. Find All Mountains Located in Nepal
+db.peaks.find(
+    { "location": "Nepal" }
+)
+
+// 17. Create New Index for Location Field
+db.peaks.createIndex( { "location": 1 } )
+
+// 18. Run Previous Query to Check Changes with Multi-key Index
+db.peaks.find(
+    { "location": "Nepal" }
+).explain("executionStats")
+
+// 19. List All Indexes in Peaks Collection
+db.peaks.getIndexes()
+
+// 20. Drop Index on First Winter Ascent and Height
+db.peaks.dropIndex("ascents.first_winter.year_1_height_-1")
+
+// 21. Retrieve Documents Matching Keyword "Earth’s" in Description
+db.content.createIndex({ "description": "text" })
+db.content.find({ $text: { $search: "Earth’s" } })
+
+// 22. Retrieve Documents Matching Exact Phrase "Earth’s highest mountain"
+db.content.find({ $text: { $search: ""Earth’s highest mountain"" } })
+
+// 23. Retrieve Documents Containing "highest mountain" but Excluding "fourth"
+db.content.find({ $text: { $search: "highest mountain -fourth" } })
+
+
+
+
+
+PRAC 7:
+//set up ur java project
+//open netbeans and create java->java application
+//downloa mongodb java driver add it to ur project
+//select properties
+//in categories pane, click on libraries and add jar/folder
+//navigate and selct the jar file
+
+---insert.java
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+
+public class insert
+{
+	public static void main(String args[])
+	{
+		MongoClient mongo=new MongoClient("localhost",27017);
+		System.out.println("connected to the database successfully:");
+		MongoDatabase database=mongo.getDatabase("TYCSJD");
+		
+	MongoCollection<Document>collection=database.getCollection("TYCSCOLL");
+		System.out.println("Collection TYCSCOLL selected successfully");
+		
+		Document document=new Document();
+		document.append("ID",1);
+		document.append("Rollno",238649);
+		document.append("age",21);
+		document.append("college","Mulund College of Commerce");
+		collection.insertOne(document);
+		System.out.println("Document inserted Successfully");
+	}
+}
+
+
+-->In cmd
+
+show dbs
+
+use TYCSJD
+
+show collections
+
+db.TYCSCOLL.find()
+
+
+------->Retrieve.java
+
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+import java.util.Iterator;
+
+public class Retrieve {   
+    public static void main(String args[]) {
+        MongoClient mongo = new MongoClient("localhost", 27017);
+        System.out.println("Connected to the database successfully:");
+        MongoDatabase database = mongo.getDatabase("TYBCS");
+        MongoCollection<Document> collection = database.getCollection("TYCOLL");
+        System.out.println("Collection TYCSCOLL selected successfully");
+
+       FindIterable<Document> iterDoc = collection.find();  
+      Iterator it = iterDoc.iterator();
+      while (it.hasNext()) {
+         System.out.println(it.next());
+      }
+        
+        mongo.close();
+    }
+}
+
+
+---->Update1.java
+
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+import com.mongodb.client.model.*;
+public class Update1 {
+	
+    public static void main(String[] args) {
+		
+        MongoClient mongo = new MongoClient("localhost", 27017);
+        System.out.println("Connected to the database successfully:");
+		
+        MongoDatabase database = mongo.getDatabase("TYBSC");
+        MongoCollection<Document> collection = database.getCollection("TYCOLL");
+
+        System.out.println("Collection TYCSCOLL selected successfully");
+
+        Document filter = new Document("roll_no", 238610);
+
+        Document updateDoc = new Document("$set", new Document("age", 555));
+        collection.updateOne(filter, updateDoc);
+
+        System.out.println("Document updated Successfully");
+    }
+}
+
+-->IN CMD
+
+db.TYCSCOLL.find()
+
+
+---->Delete.java
+
+
+
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.MongoClient;
+import org.bson.Document;
+import com.mongodb.client.model.*;
+
+public class Delete {
+	
+    public static void main(String[] args) {
+		
+        MongoClient mongo = new MongoClient("localhost", 27017);
+        System.out.println("Connected to the database successfully:");
+		
+        MongoDatabase database = mongo.getDatabase("TYBSC");
+        MongoCollection<Document> collection = database.getCollection("TYCOLL");
+
+        System.out.println("Collection TYCSCOLL selected successfully");
+
+        Document filter = new Document("roll_no", 238602);
+
+         
+        collection.deleteOne(filter);
+
+        System.out.println("Document deleted Successfully");
+    }
+}
+
+-->In CMD
+
+db.TYCSCOLL.find()
+
+
+
+
+
+PRAC 8
+
+-->INSERT
+
+from pymongo import MongoClient
+client = MongoClient('localhost',27017)
+db = client.pydb
+
+def insert():
+    try:
+        empID=input('Enter the ID : ')
+        empName=input('Enter the Name :')
+        empAge=input('Enter the Age : ')
+        empCountry=input('Enter the Country : ')
+
+        db.pycoll.insert_one(
+                {
+                    "_id":empID,
+                    "name":empName,
+                    "age":empAge,
+                    "country":empCountry
+                }
+            )
+        print("\nInsert the Data Successfully\n")
+    except Exception:
+        print(str(e))
+
+insert()
+
+
+-->IN CMD
+
+use pydb
+
+db.pycoll.find()
+
+
+-->UPDATE
+
+from pymongo import MongoClient
+client = MongoClient('localhost',27017)
+db = client.pydb
+
+def update():
+    try:
+        name=input('Enter the Name :')
+        age=input('Enter the Updated Age : ')
+
+        db.pycoll.update_one(
+             { "name":name},{"$set":{"age":age}}
+            )
+        print("\n Data updated Successfully\n")
+    except Exception:
+        print(str(e))
+
+update()
+
+
+-->IN CMD
+
+
+db.pycoll.find()
+
+
+-->DELETE
+
+from pymongo import MongoClient
+client = MongoClient('localhost',27017)
+db = client.pydb
+
+def delete():
+    try:
+        Id=input('Enter the Id :')
+
+        db.pycoll.delete_one(
+             { "_id":Id}
+            )
+        print("\n Data Deleted Successfully\n")
+    except Exception:
+        print(str(e))
+delete()
+
+
+-->IN CMD
+
+
+db.pycoll.find()
+
+
+
+
+PRAC 9: 
+//intall mongodb driver https://pecl.php.net/package
+//download and set the dll file in xampp->php->ext
+//start the apache server and visit the admin to check
+//write the script nd store in the file htdocs
+after that run the file on browser as localhost/insert.php
+//insert
+<?php
+$m = new MongoClient();
+$collection = $m->mydb->mycol;
+$doc = [
+    "title" => "MongoDB", 
+    "description" => "database", 
+    "like" => 100, 
+    "url" => "http://www.mongo.com", 
+    "by" => "NoSql"
+];
+$collection->insert($doc);
+echo "Document inserted successfully";
+?>
+//update
+<?php
+$m = new MongoClient();
+$collection = $m->mydb->mycol;
+$collection->update(["title" => "MongoDB"], ['$set' => ["title" => "MongoDB Tutorial"]]);
+echo "Document updated successfully";
+?>
+//retrieve
+<?php
+$m = new MongoClient();
+$collection = $m->mydb->mycol;
+$cursor = $collection->find();
+foreach ($cursor as $doc) {
+    echo $doc["title"] . "<br>" . $doc["description"] . "<br>" . $doc["url"] . "<br>" . $doc["like"] . "<br>";
+}
+?>
+//delete
+<?php
+$m = new MongoClient();
+$collection = $m->mydb->mycol;
+	$collection->remove(["title" => "MongoDB Tutorial"]);
+echo "Document deleted successfully";
+?>
+
+
+Prac 10
+# Step 1: Start MongoDB Server (Command Prompt 1)
+mongod
+# Step 2: Open Mongo Shell (Command Prompt 2)
+mongo
+# Step 3: Navigate to MongoDB bin directory (Command Prompt 3)
+cd C:\Program Files\MongoDB\Server\5.0\bin
+# Step 4: Show all databases (Command Prompt 2)
+show dbs
+# Step 5: Create a backup of all databases (Command Prompt 3)
+mongodump
+# Step 6: Delete a database (Command Prompt 2)
+use mydb                   # Replace 'mydb' with the actual database name to delete
+db.dropDatabase()          # Drop the selected database
+show dbs                   # Verify the deletion of the database
+# Step 7: Restore all databases from the backup (Command Prompt 3)
+mongorestore
+# Step 8: Check if all databases have been restored (Command Prompt 2)
+show dbs
+# Step 9: Delete the dump folder created in the bin directory of MongoDB (Command Prompt 3)
+# Make sure to delete the previous dump folder if it exists
+# Step 10: Create a backup of a single database (Command Prompt 3)
+mongodump --db mydb       # Replace 'mydb' with the actual database name
+# Step 11: To restore the deleted database, first drop it (Command Prompt 2)
+use mydb                   # Replace 'mydb' with the actual database name
+db.dropDatabase()          # Drop the selected database
+show dbs                   # Verify the deletion
+# Step 12: Restore the deleted database (Command Prompt 3)
+mongorestore --db mydb dump/mydb  # Replace 'mydb' with the actual database name
+# Step 13: Check the result (Command Prompt 2)
+show dbs
+# Step 14: Delete the dump folder created in the bin directory of MongoDB (Command Prompt 3)
+# Ensure to remove the previous dump folder if it exists
+# Step 15: Back up a specific collection (Command Prompt 3)
+mongodump --db mydb --collection mycollection  # Replace 'mydb' and 'mycollection' accordingly
+# Step 16: Verify the backup is created in the bin folder
+# Step 17: Delete the collection from the database (Command Prompt 2)
+use mydb                             # Replace 'mydb' with the actual database name
+db.mycollection.drop()               # Drop the selected collection
+# Step 18: Restore the deleted collection (Command Prompt 3)
+mongorestore --db mydb --collection mycollection dump/mydb/mycollection.bson  # Adjust accordingly
+# Step 19: Check the collection (Command Prompt 2)
+show collections
