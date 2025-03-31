@@ -1,0 +1,1023 @@
+################################################################################################################################1
+student<-read.csv("D:/RStudio/pract/student.csv")
+
+head(student)
+
+str(student)
+
+summary(student)
+
+dim(student)
+colnames(student)
+
+student[student$Tmarks > 750,]
+
+student[student$class == "tycs" & student$TotalMarks > 400, 1:2]
+
+student[order(student$Tmarks),]
+
+student[is.na(student$Tmarks),]
+
+# Scatter plot
+plot(student$rollno, student$Tmarks,
+     xlab = "Study Hours",
+     ylab = "Total Marks",
+     main = "Study Hours vs Total Marks",
+     pch = 19, col = "blue")
+
+
+boxplot(student$Tmarks,main="Boxplot of Total Marks")
+################################################################################################################################2
+Q.1 Ten flower stems are chosen at random from a population and their heights are found to be (in cms) 63, 63, 66, 67, 68, 69, 70, 70, 71 and 71. Discuss whether the mean height of the population is 66 cms.
+Ans :-
+weights <-c(63,63,66,67,68,69,70,70,71,71)
+
+t.test(weights,mu=66)
+
+Q.2 The class test is conducted for the 10 students and their marks are listed below: 50, 49, 52, 44, 45, 48, 46, 45, 49, 45. Test if the average marks of the students can be taken to be 50.
+Ans:-
+weights<-c(50, 49, 52, 44, 45, 48, 46, 45, 49, 45) t.test(x=-weights,mu-50)
+
+Q.3 A random sample of 10 boys had the following IO’s  70, 120, 110, 101, 88, 83, 95, 88, 107, 100 Does this data support the claim that population mean IQ is 100?
+
+weights<-c(70, 120, 110, 101, 68, 83, 95, 88, 107, 100)  t.test(x-weights, mu-100)
+
+Q.4 Using the mtcars data set, test the hypothesis the average miles per gallon for care in this data set is 20 mpg.
+Ans: -
+data("mtcars")
+mpg=(mtcars $mpg) 
+t.test(mpg,mu=20)
+
+Q.5 Two types of drugs were used on 5 and 7 patients for reducing their weight. Drug A was imported and drug B indigenous. The decrease in the weight after using the drugs for six months was as follows:
+Ans:-
+s1<-c(10,12,13,11,14)
+s2<-c(8,9,12,14,15,10,9)
+t.test(s1,s2)
+
+Q.6 The sales data of an item in six shops before and after a special promotional
+Ans: -
+
+s1<-c(53,28,31,48,50,42)
+s2<-c(58,29,30,55,56,45)
+t. test (s1,s2, paired = TRUE)
+
+Q.7 Consider the survey data in the MASS library which represents the data from a survey conducted on students. Test the hypothesis whether the student’s smoking habit is independent of their exercise level at .05 significance level.
+Ans: -
+library(MASS)
+
+data=table(survey$Smoke, survey$Exer) chisq.test(data)
+
+Q.8 Consider the ‘cyl’ and ‘carb’ variables in ‘mtcars’ dataset and test whether it is dependent or not.
+Ans: - 
+data=table(mtcars$cyl, mtcars$carb)
+chisq.test(data)
+
+
+Q.9 whether the choice of sport is independent of gender or not. So, we asked one hundred men and one hundred women which sport they prefer to play among archery, boxing, and cycling and summarizes the data obtained in the following two-way table.
+
+Ans: -
+
+Data <- matrix(c(35, 15, 50, 10, 30, 60), nrow 2, ncol = 3, byrow = T)
+rownames(Data)<-c('Female','Male')
+colnames (Data) <- c('Archery', 'Boxing', 'Cycling')
+chisq.test (Data)
+
+Q.10 Is being left-handed hereditary? To answer this question, 250 adults are randomly selected and their handedness and their parents’ handedness are noted. The results are summarized in the table provided. Test, at the 1% level of significance, whether there is sufficient evidence in the data to conclude that there is a hereditary element in handedness.
+
+Ans: -
+
+data matrix(c(8,10,12,178,21,21), nrow-2, nco 1-3, byrow-T)
+rownames (data)= c("Left", "Right")
+colnames (data) = c("0", "1","2")
+chisq.test(data)
+
+
+Q.11 The data is a contingency table containing 13 housetasks and their distribution in the couple:
+
+
+HouseTask read.csv(file.choose(), sep=", ", header=TRUE)
+data-HouseTask[,-1]
+chisq.test(data)
+
+################################################################################################################################3
+1)  
+Code:  
+Null Hypothesis(H0) : The variance of two samples is equal Alternative Hypotesis(H1) : The variance of two samples is not equal data = read.csv(file.choose(),header = T) var.test(data$A, data$B)  
+p-value = 0.6359 which is >0.05 thus accept Null Hypothesis(H0)  Thus variance of two samples is equal  
+2)  
+Code:  
+Null Hypothesis(H0) : The variance of two samples is equal Alternative Hypotesis(H1) : The variance of two samples is not equal data = read.csv(file.choose(),header = T) var.test(data$time_g1, data$time_g2)  
+p-value = 0.4524 which is > 0.05 thus accept Null Hypothesis (H0)  Thus the variance of two samples is equal   
+3)   
+Code :  
+#Null Hypothesis(H0) : The average number of years spent in school is same in both the countries  
+#Alternative Hypotesis(H1) : The average number of years spent in school is same in both the countries edu = read.csv(file.choose(),header = T) var.test(edu$UK, edu$Germany)  
+#p-value = 0.006651 which is < 0.05 thus reject Null Hypothesis  #Thus The average number of years spent in school is not same  
+4)  
+Code:  
+#Null Hypothesis(H0) : The satisfaction index is same for all the department(Finance, Marketing & CS)  
+#Alternative Hypothesis(H1): The satisfaction index is same for all the department(Finance,  
+Marketing & CS)  
+data=read.csv(file.choose(), header = T) 
+names(data) result=aov(formula = 
+SatIndex~Dept, data=data) summary(result)  
+#p-value= 0.154 which is > 0.05 thus accept Null Hypothesis  #Thus the satisfaction index for all the department is same  
+5)
+Code:  
+#Effect of department  
+#Null Hypothesis(H0) : The satisfaction index is same for all the department(Finance, Marketing & CS)  
+#Alternative Hypothesis(H1): The satisfaction index is same for all the department(Finance, Marketing & CS)  
+#Effect of experience  
+#Null Hypothesis(H0) : The satisfaction index is same for all the experience levels  
+#Alternative Hypothesis (H1) : The satisfaction index is not the same for all the experience levels  
+#Effect of department and experience  
+#Null Hypothesis (H0) : No interaction between department and experience level  
+#ALternative Hypothesis(H1) : There is interaction between department and experience level data=read.csv(file.choose(), header = T) names(data)  
+result=aov(formula = SatIndex~Dept+Experience+Dept*Experience, data=data) summary(result)  
+# For Effect of Department : p-value = 0.184 which is > 0.05 thus accept null Hypothesis  #Thus satisfaction level is same for all the department  
+# For Effect of Experience : p-value = 0.241 which is > 0.05 thus accept null Hypothesis  
+#Thus satisfaction level is same for all the experience level  
+# For Effect of Department and  Experience : p-value = 0.487 which is > 0.05 thus accept null Hypothesis  
+#Thus no interaction between department and experience level  
+6)
+Code:  
+#Effect of Gender  
+#Null Hypothesis(H0) : The political interest is same for all the genders  
+#Alternative Hypothesis(H1): The political interest is not same for all the genders  #Effect of Education  
+#Null Hypothesis(H0) : The political interest is same for all the levels of education  
+#Alternative Hypothesis (H1) : The political interest is not same for all the levels of education  
+#Effect of gender and education level  
+#Null Hypothesis (H0) : No interaction between gender and education level  
+#ALternative Hypothesis(H1) : There is interaction between gender and education level data=read.csv(file.choose(), header = T) names(data) result=aov(formula = Pol_int~Gender+Edu+Gender*Edu, data=data) summary(result)  
+# For Effect of Gender : p-value = 0.156 which is > 0.05 thus accept null Hypothesis  
+#Thus satisfaction level is same for all the Gender  
+# For Effect of Education level : p-value = 0.150 which is > 0.05 thus accept null Hypothesis  #Thus satisfaction level is same for all the education levels  
+# For Effect of Department and  Experience : p-value = 0.804 which is > 0.05 thus accept null Hypothesis  
+#Thus no interaction between gender and education level 
+
+################################################################################################################################4
+
+// Switch to the "library" database
+use library;
+
+// Insert multiple book records into the "books" collection
+db.books.insertMany([
+    {
+        ISBN: "978-0131103627",
+        title: "The C Programming Language",
+        author: "Brian W. Kernighan, Dennis M. Ritchie",
+        publisher: "Prentice Hall",
+        category: "Programming",
+        price: 45.99
+    },
+    {
+        ISBN: "978-0596009205",
+        title: "Head First Java",
+        author: "Kathy Sierra, Bert Bates",
+        publisher: "O'Reilly Media",
+        category: "Programming",
+        price: 39.99
+    },
+    {
+        ISBN: "978-1491950357",
+        title: "Python for Data Analysis",
+        author: "Wes McKinney",
+        publisher: "O'Reilly Media",
+        category: "Data Science",
+        price: 49.99
+    },
+    {
+        ISBN: "978-0262033848",
+        title: "Introduction to the Theory of Computation",
+        author: "Michael Sipser",
+        publisher: "MIT Press",
+        category: "Computer Science",
+        price: 72.50
+    },
+    {
+        ISBN: "978-0201616224",
+        title: "The Pragmatic Programmer",
+        author: "Andrew Hunt, David Thomas",
+        publisher: "Addison-Wesley",
+        category: "Software Development",
+        price: 55.00
+    }
+]);
+
+// Retrieve all documents from the "books" collection in a readable format
+db.books.find().pretty();
+
+// Retrieve only specific fields (title, author, ISBN) from all documents
+db.books.find({}, { title: 1, author: 1, ISBN: 1 }).pretty();
+
+// Find books where the price is greater than 50 and retrieve only the title field
+db.books.find({ price: { $gt: 50 } }, { title: 1 }).pretty();
+
+// Find books where the price is greater than 50 and retrieve both title and price
+db.books.find({ price: { $gt: 50 } }, { title: 1, price: 1 }).pretty();
+
+// Delete a book using ISBN (incorrect format, should be a string)
+db.books.deleteOne({ ISBN: 978-0201616224 }); // Incorrect
+
+// Correct version: Delete a book using ISBN
+db.books.deleteOne({ ISBN: "978-0201616224" });
+
+// Delete a book where price is 39.99
+db.books.deleteOne({ price: 39.99 });
+
+// Update the price of a book from 55 to 100
+db.books.updateOne({ price: 55 }, { $set: { price: 100 } });
+
+// Count the number of documents in the "books" collection
+db.books.countDocuments();
+
+// Sort books by price in descending order
+db.books.find().sort({ price: -1 });
+
+// Sort books by price in ascending order
+db.books.find().sort({ price: 1 });
+
+// Find the book with the lowest price
+db.books.find().sort({ price: 1 }).limit(1);
+
+// Find the book with the highest price
+db.books.find().sort({ price: -1 }).limit(1);
+
+// Find books where price is greater than 60 and less than 80
+db.books.find({ price: { $gt: 60, $lt: 80 } });
+
+// Find books where price is greater than 60 and less than 100
+db.books.find({ price: { $gt: 60, $lt: 100 } });
+
+// Find books where price is greater than 60 and less than 101
+db.books.find({ price: { $gt: 60, $lt: 101 } });
+
+// Group books by category and count the number of books in each category
+db.books.aggregate([{ $group: { _id: "$category", count: { $sum: 1 } } }]);
+
+// Get a list of distinct publishers
+db.books.distinct("publisher");
+
+// Attempt to find books with above-average price using aggregation and lookup (incorrect)
+db.books.aggregate([
+    { $group: { _id: null, avgPrice: { $avg: "$price" } } },
+    { $lookup: { from: "books", as: "Above Average", localField: "avgPrice", foreignField: "aboveAvg" } }
+]);
+
+################################################################################################################################5
+Q1) 
+Code:
+height <- c(151, 174, 138, 186, 128, 136, 179, 163, 152)
+weight <- c(63, 81, 56, 91, 47, 57, 76, 72, 62)
+data <- data.frame(height, weight)
+model <- lm(weight ~ height, data = data)
+summary(model)
+new_height <- data.frame(height = 140)
+predicted_weight <- predict(model, new_height)
+print(paste("Predicted Weight for height 140 cm:", predicted_weight))
+plot(data$height, data$weight, main = "Height vs Weight", 
+     xlab = "Height (cm)", ylab = "Weight (kg)", pch = 16, col = "blue")
+abline(model, col = "red", lwd = 2)
+boxplot(data)
+qqnorm(model$residuals, main = "Q-Q Plot of Residuals")
+qqline(model$residuals, col = "red")
+plot(fitted(model), residuals(model), main = "Residuals vs Fitted",
+     xlab = "Fitted Values", ylab = "Residuals", pch = 16, col = "purple")
+abline(h = 0, col = "grey", lwd = 2)
+
+Q2)
+Code:
+home_size <- c(1400, 1300, 1200, 950, 900, 1000, 1300, 850, 1100)
+selling_price <- c(70, 62, 65, 45, 40, 53, 68, 40, 55)
+data <- data.frame(home_size, selling_price)
+model <- lm(selling_price ~ home_size, data = data)
+summary(model)
+new_home <- data.frame(home_size = 1500)
+predicted_price <- predict(model, new_home)
+print(paste("Predicted Selling Price for 1500 sq ft home:", round(predicted_price, 2), "lakh Rs."))
+plot(home_size, selling_price, pch = 16, col = "blue", main = "Home Size vs Selling Price",
+     xlab = "Home Size (sq ft)", ylab = "Selling Price (lakh Rs.)")
+abline(model, col = "red", lwd = 2)
+boxplot(data, main = "Box Plot of Home Size and Selling Price", col = c("lightblue", "lightgreen"),
+        ylab = "Values")
+qqnorm(residuals(model), main = "Q-Q Plot of Residuals")
+qqline(residuals(model), col = "red", lwd = 2)
+plot(fitted(model), residuals(model), main = "Residuals vs Fitted",
+     xlab = "Fitted Values", ylab = "Residuals", pch = 16, col = "purple")
+abline(h = 0, col = "grey", lwd = 2)
+ 
+
+Q3)
+Code:
+years_of_service <- c(11, 7, 9, 5, 8, 6, 10)
+income <- c(17, 15, 13, 12, 16, 14, 18)
+
+data <- data.frame(years_of_service, income)
+
+model <- lm(income ~ years_of_service, data = data)
+summary(model)
+
+plot(years_of_service, income, main = "Years of Service vs Income",
+     xlab = "Years of Service", ylab = "Income (in thousands Rs)",
+     pch = 16, col = "blue")
+abline(model, col = "red")
+predicted_income <- predict(model, newdata = data.frame(years_of_service = 10))
+cat("Predicted Income for 10 years of service:", predicted_income, "thousands Rs")
+plot(model$residuals, main = "Residual Plot",
+     xlab = "Index", ylab = "Residuals", col = "red", pch = 16)
+abline(h = 0, col = "blue")
+qqnorm(model$residuals, main = "Q-Q Plot")
+qqline(model$residuals, col = "red")
+boxplot(income, main = "Box Plot of Income", ylab = "Income (in thousands Rs)", col = "lightblue", horizontal = TRUE)
+
+Q4) 
+Code:
+data(iris)
+model <- lm(Sepal.Length ~ Sepal.Width, data = iris)
+summary(model)
+new_data <- data.frame(Sepal.Width = c(4.0))
+predicted_sepal_length <- predict(model, new_data)
+print(predicted_sepal_length)
+plot(iris$Sepal.Width, iris$Sepal.Length, main = "Sepal Width vs Sepal Length",
+     xlab = "Sepal Width", ylab = "Sepal Length", pch = 16, col = "blue")
+abline(model, col = "red")
+plot(model$fitted.values, model$residuals, main = "Residuals vs Fitted Model",
+     xlab = "Fitted Values", ylab = "Residuals", pch = 16, col = "red")
+abline(h = 0, col = "blue")
+qqnorm(model$residuals, main = "Q-Q Plot")
+qqline(model$residuals, col = "red")
+boxplot(iris$Sepal.Length, iris$Sepal.Width, 
+        names = c("Sepal Length", "Sepal Width"), 
+        main = "Box Plot of Sepal Length and Sepal Width", 
+        ylab = "Values", 
+        col = c("lightblue", "lightgreen"))
+
+Q5) 
+Code:
+data(mtcars)
+model_mtcars <- lm(mpg ~ hp, data = mtcars)
+summary(model_mtcars)
+new_data <- data.frame(hp = c(100, 150, 200))
+predicted_mpg <- predict(model_mtcars, new_data)
+print(predicted_mpg)
+plot(mtcars$hp, mtcars$mpg, main = "Horsepower vs MPG",
+     xlab = "Horsepower", ylab = "MPG", pch = 16, col = "blue")
+abline(model_mtcars, col = "red")
+plot(model_mtcars$fitted.values, model_mtcars$residuals, main = "Residuals vs Fitted Model",
+     xlab = "Fitted Values", ylab = "Residuals", pch = 16, col = "red")
+abline(h = 0, col = "blue")
+qqnorm(model_mtcars$residuals, main = "QQ Plot of Residuals")
+qqline(model_mtcars$residuals, col = "red")
+boxplot(mtcars$mpg, mtcars$hp, names = c("MPG", "Horsepower"),
+        main = "Box Plot of MPG and Horsepower", 
+        ylab = "Values", col = c("lightblue", "lightgreen"))
+
+Q6) 
+Code:
+library(ggplot2)
+
+heart_data <- read.csv(file.choose(), header = TRUE)
+head(heart_data)
+
+model <- lm(heart_disease ~ biking + smoking, data = heart_data)
+summary(model)
+
+new_data <- data.frame(biking = 50, smoking = 10)
+predicted_heart_disease <- predict(model, newdata = new_data)
+cat("Predicted Heart Disease: ", predicted_heart_disease, "\n")
+# Biking vs Heart Disease
+ggplot(heart_data, aes(x = biking, y = heart_disease)) +
+  geom_point(aes(color = heart_disease), size = 3) +
+  labs(title = "Scatter Plot: Biking vs Heart Disease", x = "Biking", y = "Heart Disease") +
+  scale_color_gradient(low = "blue", high = "red") +
+  theme_minimal()
+
+# Smoking vs Heart Disease
+ggplot(heart_data, aes(x = smoking, y = heart_disease)) +
+  geom_point(aes(color = heart_disease), size = 3) +
+  labs(title = "Scatter Plot: Smoking vs Heart Disease", x = "Smoking", y = "Heart Disease") +
+  scale_color_gradient(low = "blue", high = "red") +
+  theme_minimal()
+
+# Boxplot for Heart Disease by Biking Level
+boxplot(
+  heart_data$heart_disease ~ cut(heart_data$biking, breaks = 4), 
+  main = "Box Plot: Heart Disease by Biking Levels",
+  xlab = "Biking Levels",
+  ylab = "Heart Disease",
+  col = c("lightblue", "lightgreen", "lightpink", "lightyellow"),
+  names = c("Low", "Medium", "High", "Very High") 
+)
+
+# Boxplot for Heart Disease by Smoking Level
+boxplot(
+  heart_data$heart_disease ~ cut(heart_data$smoking, breaks = 4),
+  main = "Box Plot: Heart Disease by Smoking Levels",
+  xlab = "Smoking Levels",
+  ylab = "Heart Disease",
+  col = c("lightblue", "lightgreen", "lightpink", "lightyellow"), 
+  names = c("Low", "Medium", "High", "Very High")
+)
+
+qqnorm(model$residuals, main = "QQ Plot of Residuals")
+qqline(model$residuals, col = "red")
+
+ggplot(data.frame(Fitted = model$fitted.values, Residuals = model$residuals), aes(x = Fitted, y = Residuals)) +
+  geom_point(color = "darkgreen") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs Fitted Values", x = "Fitted Values", y = "Residuals") +
+  theme_minimal()
+
+Q7) 
+Code:
+library(ggplot2)
+index_data <- read.csv(file.choose(), header = TRUE)
+model <- lm(index ~ written + language + tech + gk, data = index_data)
+summary(model)
+new_data <- data.frame(written = 48, language = 67, tech = 56, gk =54)
+predicted_index <- predict(model, newdata = new_data)
+cat("Predicted Performance Index: ", predicted_index, "\n")
+
+pairs(~index + written + language + tech + gk, data = index_data, main = "Pairwise Scatter Plot Matrix"
+ggplot(index_data, aes(x = factor(1), y = written)) +
+  geom_boxplot() +
+  labs(title = "Box Plot: Written Skills", y = "Written Skills") +
+  theme_minimal()
+ggplot(index_data, aes(x = factor(1), y = language)) +
+  geom_boxplot() +
+  labs(title = "Box Plot: Language Skills", y = "Language Skills") +
+  theme_minimal()
+
+ggplot(index_data, aes(x = factor(1), y = tech)) +
+  geom_boxplot() +
+  labs(title = "Box Plot: Technical Knowledge", y = "Technical Knowledge") +
+  theme_minimal()
+
+ggplot(index_data, aes(x = factor(1), y = gk)) +
+  geom_boxplot() +
+  labs(title = "Box Plot: General Knowledge", y = "General Knowledge") +
+  theme_minimal()
+
+qqnorm(model$residuals, main = "QQ Plot of Residuals")
+qqline(model$residuals, col = "red")
+
+ggplot(data.frame(Fitted = model$fitted.values, Residuals = model$residuals), aes(x = Fitted, y = Residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs Fitted Values", x = "Fitted Values", y = "Residuals") +
+  theme_minimal()
+
+################################################################################################################################6
+
+Practical 6 - Logistic Regression
+Q 1)
+# Read data
+loan<-read.csv(file.choose(),header=T,sep=",")
+
+# To extract first few lines of data
+head(loan)
+# To check summary of entire data
+summary(loan)
+
+# To check data type of every variable in dataset
+str(loan)
+loan$AGE<-as.factor(loan$AGE)
+str(loan)
+names(loan)
+
+# creating model
+model1<-glm(DEFAULTER~.,family = binomial,data = loan)
+summary(model1)
+
+# global testing for the acceptance of the model
+H0: b1 = b2 = …          = bk = 0  (Ho: None of the variables has significant impact)
+H1: At least one coefficient is not zero  
+null<-glm(DEFAULTER~1,family = binomial,data=loan)
+anova(null,model1,test = "Chisq")
+Reject H0 if p value < 0.05
+# predicting the probabilities
+loan$predprob<-round(fitted(model1),2)
+head(loan)
+
+# goodness of fit using receiver Operational Curve 
+pred<-predict(model1,loan,type="response")
+install.packages("ROCR")
+library(ROCR)
+rocrpred<-prediction(pred,loan$DEFAULTER)
+rocrperf<-performance(rocrpred,"tpr","fpr")
+
+# To check proper cut off point
+plot(rocrperf,colorize=TRUE,print.cutoffs.at=seq(0.1,by=0.1))
+	auc <- performance(rocrpred, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+
+# To check coefficients
+coef(model1)
+exp(coef(model1))
+
+Q 2)
+# Installing the package
+install.packages("dplyr")
+# Loading package
+library(dplyr)
+# Summary of dataset in package
+summary(mtcars)
+# For Logistic regression
+install.packages("caTools") 
+# For ROC curve to evaluate model
+install.packages("ROCR")     
+# Loading package
+library(caTools)
+library(ROCR)
+# Splitting dataset
+split <- sample.split(mtcars, SplitRatio = 0.8)
+split
+train_reg <- subset(mtcars, split == "TRUE")
+test_reg <- subset(mtcars, split == "FALSE")
+# Training model
+logistic_model <- glm(vs ~ wt + disp,data = train_reg,family = "binomial")
+logistic_model
+
+# Summary
+summary(logistic_model)
+
+predict_reg <- predict(logistic_model,
+                       test_reg, type = "response")
+predict_reg
+# Changing probabilities
+predict_reg <- ifelse(predict_reg >0.5, 1, 0)
+
+# Evaluating model accuracy
+# using confusion matrix
+table(test_reg$vs, predict_reg)
+
+missing_classerr <- mean(predict_reg != test_reg$vs)
+print(paste('Accuracy =', 1 - missing_classerr))
+
+# ROC-AUC Curve
+ROCPred <- prediction(predict_reg, test_reg$vs)
+ROCPer <- performance(ROCPred, measure = "tpr",
+                      x.measure = "fpr")
+
+auc <- performance(ROCPred, measure = "auc")
+auc <- auc@y.values[[1]]
+auc
+
+# Plotting curve
+plot(ROCPer)
+plot(ROCPer, colorize = TRUE,
+     print.cutoffs.at = seq(0.1, by = 0.1),
+     main = "ROC CURVE")
+abline(a = 0, b = 1)
+
+auc <- round(auc, 4)
+legend(.6, .4, auc, title = "AUC", cex = 1)
+
+Q 3)
+# Load the dataset
+data(Titanic)
+
+# Convert the table to a data frame
+data <- as.data.frame(Titanic)
+
+# Fit the logistic regression model
+model <- glm(Survived ~ Class + Sex + Age, family = binomial, data = data)
+
+# View the summary of the model
+summary(model)
+# Install and load the required packages
+install.packages("ROCR")
+library(ROCR)
+
+# Fit the logistic regression model
+model <- glm(Survived ~ Class + Sex + Age, family = binomial, data = data)
+
+# Make predictions on the dataset
+predictions <- predict(model, type = "response")
+
+# Create a prediction object for ROCR
+prediction_objects <- prediction(predictions, data$Survived)
+
+# Create an ROC curve object
+roc_object <- performance(prediction_objects, measure = "tpr", x.measure = "fpr")
+
+# Plot the ROC curve
+plot(roc_object, main = "ROC Curve", col = "blue", lwd = 2)
+
+# Add labels and a legend to the plot
+legend("bottomright", legend = 
+         paste("AUC =", round(performance(prediction_objects, measure = "auc")
+                              @y.values[[1]], 2)), col = "blue", lwd = 2)
+
+################################################################################################################################7
+Q1) k-means clustering 
+# Read data
+data("iris")
+names(iris)
+new_data<-subset(iris,select = c(-Species))
+new_data
+#kmeans(): Performs K-means clustering.
+        cl<-kmeans(new_data,3)
+        cl
+data <- new_data
+#Calculates the total within-cluster sum of squares (WSS) for different values of k
+wss <- sapply(1:15,  function(k){kmeans(data, k )$tot.withinss})
+wss
+
+#To visualize how WSS changes with different values of kkk and find the "elbow" (the optimal number of clusters)
+plot(1:15, wss,
+type="b", pch = 19, frame = FALSE, 
+xlab="Number of clusters K",
+ylab="Total within-clusters sum of squares")
+
+#Visualizing the clusters
+install.packages("cluster")
+library(cluster)
+clusplot(new_data, cl$cluster, color=TRUE, shade=TRUE,  labels=2, lines=0)
+
+#To displays the cluster assignments for each data point in the new_data dataset.
+cl$cluster
+#To display the centroids of the clusters.
+cl$centers
+
+Q2) Hierarchical Clustering: Agglomerative clustering 
+# Read data
+data("iris")
+names(iris)
+
+#To performs hierarchical clustering
+clusters <- hclust(dist(iris[, 3:4]))
+plot(clusters)
+
+clusterCut <- cutree(clusters, 3)
+table(clusterCut, iris$Species)
+install.packages("ggplot2") 
+library(ggplot2)	
+
+#To create a scatter plot of Petal.Length vs Petal.Width
+ggplot(iris, aes(Petal.Length, Petal.Width, color = iris$Species)) + 
+geom_point(alpha = 0.4, size = 3.5) + geom_point(col = clusterCut) + 
+scale_color_manual(values = c('black', 'red', 'green'))
+
+clusters <- hclust(dist(iris[, 3:4]), method = 'average')
+clusterCut1 <- cutree(clusters, 3)
+table(clusterCut1, iris$Species)
+plot(clusters)
+
+# Loading data
+data(iris)
+# Structure 
+str(iris)
+# Installing Packages
+install.packages("ClusterR")
+
+install.packages("cluster")
+
+# Loading package
+library(ClusterR)
+library(cluster)
+
+# Removing initial label of 
+# Species from original dataset
+iris_1 <- iris[, -5]
+
+# Fitting K-Means clustering Model 
+# to training dataset
+set.seed(240) # Setting seed
+kmeans.re <- kmeans(iris_1, centers = 3, nstart = 20)
+kmeans.re
+
+# Cluster identification for 
+# each observation
+kmeans.re$cluster
+
+# Confusion Matrix
+cm <- table(iris$Species, kmeans.re$cluster)
+cm
+
+# Model Evaluation and visualization
+plot(iris_1[c("Sepal.Length", "Sepal.Width")])
+
+plot(iris_1[c("Sepal.Length", "Sepal.Width")], 
+col = kmeans.re$cluster, 
+main = "Clusters: Sepal Length vs Sepal Width", 
+xlab = "Sepal Length", 
+ylab = "Sepal Width", 
+pch = 19)
+
+plot(iris_1[c("Sepal.Length", "Sepal.Width")], 
+col = kmeans.re$cluster, 
+main = "K-means with 3 clusters")
+
+## Plotiing cluster centers
+kmeans.re$centers
+kmeans.re$centers[, c("Sepal.Length", "Sepal.Width")]
+
+# cex is font size, pch is symbol
+points(kmeans.re$centers[, c("Sepal.Length", "Sepal.Width")], 
+col = 1:3, pch = 8, cex = 3) 
+## Visualizing clusters
+y_kmeans <- kmeans.re$cluster
+clusplot(iris_1[, c("Sepal.Length", "Sepal.Width")],        
+y_kmean
+lines = 0,
+shade = TRUE,
+color = TRUE,
+labels = 2,
+plotchar = FALSE,
+span = TRUE,
+main = paste("Cluster iris"),
+xlab = "Sepal.Length",
+ylab = "Sepal.Width")
+
+################################################################################################################################8
+
+1.PCA and Principal Component Regression (PCR) on iris dataset
+
+data("iris")
+head(iris)
+
+summary(iris)
+
+plot(iris$Sepal.Length,iris$Sepal.Width)
+
+plot(scale(iris$Sepal.Length),scale(iris$Sepal.Width))
+
+summary(mypr)
+
+plot(mypr,type="l")
+
+biplot(mypr,scale=0)
+
+str(mypr)
+
+mypr$x
+
+iris2<-cbind(iris,mypr$x[,1:2])
+head(iris2)
+
+cor(iris[,-5],iris2[,6:7])
+
+install.packages("pls")
+library(pls)
+names(iris)
+
+iris$pred<-predict(pcmodel,iris,ncomp = 2)
+head(iris)
+
+2. PCA and Principal Component Regression (PCR) on mtcars dataset
+1. Load & Explore mtcars Dataset
+data(mtcars)  # Load dataset
+head(mtcars)  # View first few rows
+summary(mtcars)  # Summary statistics
+2. Compute Principal Components
+mypr_mtcars <- prcomp(mtcars, scale = TRUE)  # Perform PCA with scaling
+Visualizing the Effect of Scaling
+plot(mtcars$mpg, mtcars$hp, main = "Original Data")
+plot(scale(mtcars$mpg), scale(mtcars$hp), main = "Scaled Data")
+
+4. PCA Results
+mypr_mtcars
+summary(mypr_mtcars)  # Check variance explained by each PC
+plot(mypr_mtcars, type = "l")  # Scree plot (Elbow method)
+biplot(mypr_mtcars, scale = 0)  # Visualize variable contributions
+
+5. Extract PCA Scores & Correlation
+str(mypr_mtcars)  # Check PCA structure
+mypr_mtcars$x  # Get PCA-transformed values
+mtcars2 <- cbind(mtcars, mypr_mtcars$x[, 1:2])  # Add PC1, PC2 to dataset
+head(mtcars2)  
+cor(mtcars[, -1], mtcars2[, 12:13])  # Correlation between original variables & PCs
+6. Principal Component Regression (PCR)
+install.packages("pls")  # Install if not available
+library(pls)
+pcmodel_mtcars <- pcr(mpg ~ ., ncomp = 3, data = mtcars, scale = TRUE)
+7. Predict mpg Using PCR
+mtcars$pred <- predict(pcmodel_mtcars, mtcars, ncomp = 2)
+head(mtcars)
+
+Q 3) PCA and Principal Component Regression (PCR) on USArrests
+1. Load & Explore mtcars Dataset
+data(USArrests)  # Load dataset
+head(USArrests)  # View first few rows
+summary(USArrests)  # Summary statistics
+2.Compute Principal Components
+mypr_usarrests <- prcomp(USArrests, scale = TRUE)  # Perform PCA with scaling
+
+3.Visualizing the Effect of Scaling
+plot(USArrests$Murder, USArrests$Assault, main = "Original Data")
+plot(scale(USArrests$Murder), scale(USArrests$Assault), main = "Scaled Data")
+4.PCA Results
+mypr_usarrests  # PCA summary
+summary(mypr_usarrests)  # Variance explained by each principal component
+plot(mypr_usarrests, type = "l")  # Elbow method
+# Biplot to visualize variable contributions
+biplot(mypr_usarrests, scale = 0)
+5.Extract PCA Scores & Correlation
+str(mypr_usarrests)  # Check PCA structure
+mypr_usarrests$x  # Get PCA-transformed values
+# Add the first two principal components to the dataset
+usarrests2 <- cbind(USArrests, mypr_usarrests$x[, 1:2])
+head(usarrests2)
+# Correlation between original variables & principal components
+cor(USArrests, usarrests2[, 5:6])
+6. Principal Component Regression (PCR)
+install.packages("pls")  # Install if not available
+library(pls)
+# Predicting Murder rate using all other variables with PCA
+pcmodel_usarrests <- pcr(Murder ~ ., ncomp = 3, data = USArrests, scale = TRUE)
+7. Predict mpg Using PCR
+USArrests$pred <- predict(pcmodel_usarrests, USArrests, ncomp = 2)
+head(USArrests)
+
+################################################################################################################################9
+
+AIM: Time series forecasting.
+Code:
+# Load dataset
+View(AirPassengers)
+
+# Check data structure
+class(AirPassengers)
+str(AirPassengers)
+start(AirPassengers)
+end(AirPassengers)
+frequency(AirPassengers)
+summary(AirPassengers)
+
+
+# Visualization
+plot(AirPassengers)
+abline(reg=lm(AirPassengers~time(AirPassengers)))
+
+cycle(AirPassengers)
+
+
+plot(aggregate(AirPassengers, FUN=mean))
+
+
+boxplot(AirPassengers~cycle(AirPassengers))
+
+# Preprocessing
+acf(AirPassengers)
+
+acf(log(AirPassengers))
+
+acf(diff(log(AirPassengers)))
+
+pacf(diff(log(AirPassengers)))
+plot(diff(log(AirPassengers)))
+
+# ARIMA Model
+fit <- arima(log(AirPassengers), c(0, 1, 1), seasonal = list(order = c(0, 1, 1), period = 12))
+pred <- predict(fit, n.ahead = 10*12)
+pred1 <- round(2.718^pred$pred, 0)
+pred1 
+
+ts.plot(AirPassengers, pred1, log = "y", lty = c(1,3))
+
+# Get only 1961 values
+data1 <- head(pred1, 12)
+data1
+
+# Train on data till 1959 and validate for 1960
+datawide <- ts(AirPassengers, frequency = 12, start=c(1949,1), end=c(1959,12))
+datawide
+
+fit1 <- arima(log(datawide), c(0,1,1), seasonal = list(order=c(0,1,1), period=12))
+pred <- predict(fit1, n.ahead=10*12)
+pred1 <- 2.718^pred$pred
+pred1
+
+################################################################################################################################10
+
+1. Decision tree classification on the iris dataset using different tree-building algorithms. 
+library(rpart)
+library(rpart.plot)
+library(tree)
+library(party)
+library(caret)
+library(e1071)
+mydata <- data.frame(iris)
+attach(mydata)
+model <- rpart(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+               data = mydata, method = "class")
+rpart.plot(model, type = 3, extra = 101, fallen.leaves = TRUE) 
+model1 <- tree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+               data = mydata)
+plot(model1)
+text(model1, all = TRUE, cex = 0.6)
+model2 <- ctree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+                data = mydata)
+plot(model2)
+model1 <- tree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width, data = mydata, control = tree.control(nobs = nrow(mydata), mincut = 10))
+plot(model1)
+text(model1, all = TRUE, cex = 0.6)
+predict(model1, iris)
+model2 <- ctree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+                data = mydata, controls = ctree_control(maxdepth = 2))
+plot(model2)
+set.seed(123)
+train_index <- createDataPartition(mydata$Species, p = 0.7, list = FALSE)
+train_data <- mydata[train_index, ]
+test_data <- mydata[-train_index, ]
+model_rpart <- rpart(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+                     data = train_data, method = "class")
+pred_rpart <- predict(model_rpart, test_data, type = "class")
+conf_matrix_rpart <- confusionMatrix(pred_rpart, test_data$Species)
+print(conf_matrix_rpart)
+model_tree <- tree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+                   data = train_data)
+pred_tree <- predict(model_tree, test_data, type = "class")
+conf_matrix_tree <- confusionMatrix(pred_tree, test_data$Species)
+print(conf_matrix_tree)
+model_ctree <- ctree(Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+                     data = train_data)
+pred_ctree <- predict(model_ctree, test_data)
+conf_matrix_ctree <- confusionMatrix(pred_ctree, test_data$Species)
+print(conf_matrix_ctree)
+accuracy_rpart <- conf_matrix_rpart$overall["Accuracy"]
+accuracy_tree <- conf_matrix_tree$overall["Accuracy"]
+accuracy_ctree <- conf_matrix_ctree$overall["Accuracy"]
+accuracy_results <- data.frame(Model = c("rpart", "tree", "ctree"),
+                               Accuracy = c(accuracy_rpart, accuracy_tree, accuracy_ctree))
+print(accuracy_results)
+barplot(accuracy_results$Accuracy, names.arg = accuracy_results$Model,
+        col = c("red", "blue", "green"), main = "Decision Tree Model Accuracy",
+        ylab = "Accuracy", ylim = c(0, 1))
+
+Q 2) Decision Tree on mtcars Dataset 
+library(rpart)
+library(tree)
+library(party)
+library(rpart.plot)
+library(caret)
+mydata <- data.frame(mtcars)
+mydata$cyl <- as.factor(mydata$cyl)
+set.seed(123)
+train_index <- createDataPartition(mydata$cyl, p = 0.7, list = FALSE)
+train_data <- mydata[train_index, ]
+test_data <- mydata[-train_index, ]
+model_rpart <- rpart(cyl ~ mpg + hp + wt + disp, data = train_data, method = "class", 
+                     control = rpart.control(cp = 0.01))
+plot(model_rpart, uniform = TRUE, margin = 0.1)
+text(model_rpart, use.n = TRUE, all = TRUE, cex = 0.8)
+pred_rpart <- predict(model_rpart, test_data, type = "class")
+conf_matrix_rpart <- confusionMatrix(pred_rpart, test_data$cyl)
+print(conf_matrix_rpart)
+model_tree <- tree(cyl ~ mpg + hp + wt + disp, data = train_data)
+plot(model_tree)
+text(model_tree, all = TRUE, cex = 0.6)
+pred_tree <- predict(model_tree, test_data, type = "class")
+conf_matrix_tree <- confusionMatrix(pred_tree, test_data$cyl)
+print(conf_matrix_tree)
+model_ctree <- ctree(cyl ~ mpg + hp + wt + disp, data = train_data)
+plot(model_ctree)
+pred_ctree <- predict(model_ctree, test_data)
+conf_matrix_ctree <- confusionMatrix(pred_ctree, test_data$cyl)
+print(conf_matrix_ctree)
+model_rpart_tuned <- rpart(cyl ~ mpg + hp + wt + disp, data = train_data, method = "class",
+                           control = rpart.control(maxdepth = 3))
+pred_rpart_tuned <- predict(model_rpart_tuned, test_data, type = "class")
+conf_matrix_rpart_tuned <- confusionMatrix(pred_rpart_tuned, test_data$cyl)
+print(conf_matrix_rpart_tuned)
+
+model_tree_tuned <- tree(cyl ~ mpg + hp + wt + disp, data = train_data,
+                         control = tree.control(nobs = nrow(train_data), mincut = 5))
+pred_tree_tuned <- predict(model_tree_tuned, test_data, type = "class")
+conf_matrix_tree_tuned <- confusionMatrix(pred_tree_tuned, test_data$cyl)
+print(conf_matrix_tree_tuned)
+model_ctree_tuned <- ctree(cyl ~ mpg + hp + wt + disp, data = train_data,
+                           controls = ctree_control(maxdepth = 3, minsplit = 5))
+pred_ctree_tuned <- predict(model_ctree_tuned, test_data)
+conf_matrix_ctree_tuned <- confusionMatrix(pred_ctree_tuned, test_data$cyl)
+print(conf_matrix_ctree_tuned)
+set.seed(123)
+train_control <- trainControl(method = "cv", number = 10)
+cv_model_rpart <- train(cyl ~ mpg + hp + wt + disp, data = train_data, method = "rpart",
+                        trControl = train_control)
+pred_cv_rpart <- predict(cv_model_rpart, test_data)
+conf_matrix_cv_rpart <- confusionMatrix(pred_cv_rpart, test_data$cyl)
+print(conf_matrix_cv_rpart)
+accuracy_results <- data.frame(Model = c("rpart", "tree", "ctree", "rpart (Tuned)", "tree (Tuned)", "ctree (Tuned)"),
+                               Accuracy = c(conf_matrix_rpart$overall["Accuracy"],
+                                            conf_matrix_tree$overall["Accuracy"],
+                                            conf_matrix_ctree$overall["Accuracy"],
+                                            conf_matrix_rpart_tuned$overall["Accuracy"],
+                                            conf_matrix_tree_tuned$overall["Accuracy"],
+                                            conf_matrix_ctree_tuned$overall["Accuracy"]))
+print(accuracy_results)
+barplot(accuracy_results$Accuracy, names.arg = accuracy_results$Model,
+        col = rainbow(6), main = "Decision Tree Model Accuracy (mtcars)",
+        ylab = "Accuracy", ylim = c(0, 1))
+
+ 
+
+ 
+ 
+
+ 
+
+
+
