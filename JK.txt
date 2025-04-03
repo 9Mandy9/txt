@@ -1,0 +1,216 @@
+#####################################################################################################################################################1
+Aim : Forensic Image using FTK Imager/Encase. 
+1.	Open FTK imager.   
+2.	In Files Select  Create Disk Image.   
+3.Select the Physical Drive Option and Click on Next.   	  
+4.Select your device(pendrive, or SD card) from the dropdown and Click on Finish.   
+    
+5.Tick the check boxes and Click on Add.   
+    
+6.	Select Image type as Raw(dd). Click on Next.   
+7.	Enter the Evidence Information as follows :   
+8.	Select Image Destination by clicking on Browse Option (image Destination) and name the file ( here imageFile).    
+9.	Click on Finish. We will now be navigated to Create Image window (displayed after step 5), 
+Click on Start. 
+10.	l start the process of creating an Image File   
+11.	After completion of Imaging process the following window will appear showing the integrity of the data.      
+12.	Image File of the device will be created in the specified directory.   
+13.	We can optionally view the Image Report by Clicking on the Summary Button Which will appear after the completion of Imaging Process.   
+
+  
+#####################################################################################################################################################2
+
+Aim: Data Acquisition
+-Perform data acquisition using:
+-USB Write Blocker+FTK Imager
+Step1: Open Registery.
+Step2: This will open Registery editor navigate to the key:
+Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control
+Step3: Right click on the Control Key in the left panel, select new>key
+Step4: Name it as StorageDevicePolicies
+Step5: Right click on the StorgeDevicePolicies add New>Key>DWORD
+Step6: Named it as WriteBlocker & Modify the value of from 0 to 1
+Step7: Now the error message will show when you try to copy or move document to USB
+Step 8: To revert the changes Modify the value of from 1 to 0
+
+#####################################################################################################################################################3
+
+
+Aim: Forensic Case Study:- Solve the case study (image file) provide in lab using autopsy.
+Step 1: Open Autopsy App after installing & Click on ‘New Case’.
+Step 2: After that fill required details by giving paths of base directory and directory in which data will be stored.
+Step 3: After that fill the case details. (Case Number and Examiner Details)
+Step 4 & 5: After that select type of data source and after that select appropriate data source file.
+Step 6: Select all ingest modules and then click on ‘Finish’.
+Now this window will be opened after Step 6.
+Step 7: Click on ‘Views->Deleted Files’ to see Deleted Files.
+If u want to extract any file then right click on desired file and select ‘Extract File’.
+Step 8: Save that File in Export Folder which will be in directory where data of case is stored by clicking ‘Save’.
+Step 9: To generate report, click on ‘Tools->Generate Report’. 
+Step 10 & 11: Select type of report as ‘Excel Report’ and then click on ‘Next->Finish’.
+Now this window will be opened after Step 11. After completing click on ‘Close’ then that report will be stored in ‘Report’ folder.
+Step 12: To see report, click on that generated report and see it.
+
+
+#####################################################################################################################################################4
+
+perform basic wireshark to analysis the packets
+Display packets based on specific ip address -> ip.addr==//ipaddress
+Coming from --------' '------- -> ip.src==//ipaddress
+Destination --------' '------- -> ip.dst==//ipaddress
+packets using http protocol --> http
+http request --> http.request
+packets having no error --> http.response.code==200
+packets having port no 80 and 443 --> tcp.port(80) || udp.port(443)
+packet contain specific keyword --> tcp contains facebook
+
+
+
+#####################################################################################################################################################5
+
+
+PRACTICAL NO: 05
+Aim: Analyse the packets provided in lab and solve the questions using Wireshark
+What web server software is used by www.snopes.com? 
+About what cell phone problem is the client concerned? 
+According to Zillow, what instrument will Ryan learn to play? 
+How many web servers are running Apache? 
+What hosts (IP addresses) think that jokes are more entertaining when they are explained?
+1. What web server software issued by www.snopes.com? 
+Select any HTTP request and expand the Hypertext Transfer Protocol then right click on Host header and then Apply as Column
+Now we can see our host www.snopes.com in host column.
+Right click on the selected packet and then select Follow 🡪 TCP stream.
+Now we can see the webserver name in server header it is Microsoft IIS 5.0
+2. About what cell phone problem is the client concerned?
+Apply frame matches “(?)cell”
+After applying the filter now, we will start to check every HTTP request. We noticed in the HTTP request cell keyword is in URL and it was about cell phone charging issue.
+3. According to Zillow, what instrument will Ryan learn to play? 
+Apply frame matches “(?) zillow”.
+After applying the filter, we found only one packet with the Zillow keyword.
+Select the packet and expand the Transmission Control Protocol tab right click on it go to Protocol Preferences and check Allow subdissector to resemble TCP stream.
+Now go to file and select Export Objects HTTP. It will save all objects from the packet.
+Click on save all.
+After saving all files in a directory and we found a swf file with name Zillow. After opening the flash file, we saw that Zillow was trying to learn saxophone.
+4. How many web servers are running Apache? 
+Apply filter http.response and we can see all http response packets.
+Now we will set the server header as column select any packet and right click on it then select Apply as Column.
+Now we can see the server column where all server name is showing.
+Now we have to check how many Apache packets are there we can’t count manually for each packet so we will apply another filter http.server contains “Apache”
+After applying filter go to Statistics Endpoints.
+It will show all connections. Now Check the limit to display filter then it will show the actual Apache connections. 
+5. What hosts (IP addresses) think that jokes are more entertaining when they are explained?
+Apply the filter frame matches “(?)jokes”
+Select HyperText Transfer Protocol, then scroll down a little bit and a text stating the same as above will be there.
+Thus, here the Hosts 173.241.244.153, 173.241.244.99, 173.241.244.7 think that jokes are more entertaining.
+
+
+#####################################################################################################################################################6
+
+
+PRACTICAL 6 
+AIM: Using Sysinternals tools for Network Tracking and Process Monitoring:  
+-Check Sysinternals tools  
+-Monitor Live Processes  
+-Capture RAM  
+-Capture TCP/UDP packets  
+-Monitor Hard Disk  
+-Monitor Virtual Memory  
+-Monitor Cache Memory 
+1.Check Sysinternals tools
+Step 1: Go to Chrome & search for Sysinternals tools
+Step 2: Click on Sysinternals tools suite -> Download Sysinternals tools -> Unzip the zip file
+2.Monitor Live Processes (Procmon)
+3.Capture RAM (RAMMap)
+4.Capture TCP/UDP packets (tcpview)
+5.Monitor Hard disk (diskmon)
+Step: Right click on diskmon.exe and Run as Administrator
+6.Monitor Virtual Memory (vmmap)
+7.Monitor Cache memory (chacheset)
+
+
+#####################################################################################################################################################7
+
+
+PRACTICAL NO: 07
+Aim: Recovering and Inspecting deleted files
+CREATING DISK IMAGE FILE:
+Step 1: Open AccessData FTK Imager, Click File, and then Create Disk Image.
+Step 2: Select the source evidence type you want to make an image of and click Next.
+Step3: Select the source evidence drive with path.
+Click on “add” to add image destination
+Step4: In the Image Destination Folder field, type the location path where you want to save the image file, or click Browse to find to the desired location.
+Step 5: After adding the image destination path click on finish and start the image processing. The images are successfully created
+RECOVERING THE DELETED FILES:
+Step 1: Open Forensic Toolkit and click on “Start a new case”. 
+Step 2: Fill the following details and click next. 
+Step 3: Click next.
+Step 4: Click next. 
+Step 6: Click Next. 
+Step 7: Add evidence, and select Acquired Image of Drive. 
+Step 8: Fill the following and click OK.
+Step 9: Click finish.
+Let the process complete.
+Step 10: Find deleted files.
+Step 11: Extract deleted files.
+Click on File Which you want to recover -> Right Click on that file and Select Export File 
+Select Destination path-> Click on Ok
+Step 12: Deleted files are recovered at the specified location.
+
+
+#####################################################################################################################################################8
+
+
+Practical No: 08
+AIM: Acquisition of Cell phones and Mobile devices.
+1.	Download required files.
+(a) MOBILedit! Forensic Software (Desktop/Laptop)
+(b) Forensic Tool apk (Android)
+2.	Connect your Device by clicking on “Connection Wizard”.
+3.	 Enable Developer Mode in your Phone and After Developer Mode Enabled -> Enable USB Debugging (developer options).
+4.	Make sure USB Debugging is enabled and you choose to connect with your desktop when confirmation prompts at your phone screen (Tick if required)
+- Click on USB Tethering (when connected with PC/Laptop).
+5.	After successful connection select the option for what we have to extract -> Specific selection.
+6.	Click on next and select what we have to configure in the report like summary, screenshots, messages, contacts or email etc.
+7.	After selection click on next.
+8.	Fill the report details and click on next:
+9.	Choose the output format such as HTML report or pdf report and click on next.
+10.	Configure the report destination path and click on Export.
+11.	Message will pop up and asking for ready to start backup then click on Ok and in Android device also Allow to backup data.
+12.	Now the extract will start and complete within few minutes.
+13.	Reports will be generated at the specified destination path.
+
+
+
+#####################################################################################################################################################9
+
+
+Practical No: 09 
+AIM: Email Forensics 
+Step 1: Open Forensic Toolkit and click on file new case 
+Step 2: Fill the following details and click next. 
+Step 3: Click next. 
+Step 4: Ensure that all checkboxes are checked and then click next. 
+Step 5: Select all and Click next. 
+Step 6: Select Email Emphasis and Click Next. 
+Step 7: Click on Add evidence, check Individual File and select the .pst file 
+Step 8: Fill the following and click OK. 
+Step 9: Click next. 
+Step 10: Click finish. 
+Step 11: Now select “From E-mail”.  
+Step 12: Select any message and Export it as a file. 
+Make sure to check “Export HTML view if available” and Click on OK. 
+Step 13: Deleted Message is recovered at the specified location. 
+Step 14: Click on .html file, it will get open in the Browser showing the content of the email.
+
+#####################################################################################################################################################10
+
+Practical: 10
+Aim: Web Browser Forensics
+Step 1: Open Browser History Examiner, Click on File > Capture History.
+Step 2: Select “Capture history from this computer”, and click on Next.
+Step 3: Select Destination Folder where the Captured Files will be Saved and click on Capture. It will Start Capturing the Data.
+Step 4: After Capturing of Data, a window will appear asking to load the captured data. Click on “Yes”.
+Step 5: Following are the Captured Data from our Browsers, organized into “Artefact” classes on the left pane. Select each class to view their respective captured Data
+Step 6: Click on File 🡪 Export > Export to HTML.
+Step 7: A window will appear asking about the data to be displayed in the HTML file. Select all and click on Export, after that select the location where the HTML File will be saved.
+Step 8: Open the HTML file from the saved location. It will get opened in the default browser as shown below:
